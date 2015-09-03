@@ -124,6 +124,7 @@ INSTALLED_APPS = [
     'treeherder.etl',
     'treeherder.workers',
     'treeherder.embed',
+    'treeherder.application'
 ]
 
 LOCAL_APPS = []
