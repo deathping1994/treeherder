@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
-    """Management command to publish a job to a pulse exchange."""
+    """Management command to ingest jobs from a set of pulse exchanges."""
 
-    help = "Ingest a message from a pulse exchange"
+    help = "Ingest jobs from a set of pulse exchanges"
 
     def handle(self, *args, **options):
         config = settings.PULSE_DATA_INGESTION_CONFIG
