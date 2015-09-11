@@ -105,3 +105,10 @@ fancy-tag==0.2.0
 # Required by oauth2
 # sha256: vGM5kZpSNbnRqu4BHKVGQYQJjwxHyQmAAfkclxdlg_U
 httplib2==0.9.1
+
+# Required by hawkrest
+# sha256: SNZPN8Hy9utro7Xy2LDByQ4offLtH9-Ah0_tDDYJ61I
+mohawk==0.3.0
+
+# sha256: 93Oaer_oUL3Wk1F803LwmvJRB-p-t0vr7NuAEWmPA-4
+hawkrest==0.0.6
