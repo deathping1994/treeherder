@@ -125,7 +125,7 @@ class JobLoader:
         return {
             "revision_hash": rs_lookup[pulse_job["origin"]["revision"]]["revision_hash"],
             "job": {
-                "job_guid": self._get_job_guid(pulse_job),
+                "job_guid": pulse_job["jobGuid"],
                 "name": pulse_job["display"].get("jobName", "unknown"),
                 "job_symbol": pulse_job["display"].get("jobSymbol"),
                 "group_name": pulse_job["display"].get("groupName", "unknown"),
@@ -223,14 +223,6 @@ class JobLoader:
                     "JSON Schema validation error during job ingestion: {}".format(e))
 
         return validated_jobs
-
-    def _get_job_guid(self, job):
-        job_guid = job["jobGuid"]
-        if job.get("isRetried", False):
-            # this is to match how retry job_guids are handled for
-            # buildbot jobs.
-            job_guid = "{}_{}".format(job_guid, str(int(self._to_timestamp(job["timeCompleted"])))[-5:])
-        return job_guid
 
     def _to_timestamp(self, datestr):
         return time.mktime(parser.parse(datestr).timetuple())

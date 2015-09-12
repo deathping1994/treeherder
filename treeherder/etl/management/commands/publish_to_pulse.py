@@ -21,14 +21,16 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('project', help="The project/repo to post jobs for (e.g.: mozilla-inbound")
+        parser.add_argument('userid', help="The Pulse userid for the named exchange")
         parser.add_argument('payload_file', help="Path to the file that holds the job payload JSON")
 
     def handle(self, *args, **options):
         project = options["project"]
+        userid = options["userid"]
         payload_file = options["payload_file"]
         config = settings.PULSE_DATA_INGESTION_CONFIG
 
-        exchange_name = "exchange/{}/jobs".format(config["userid"])
+        exchange_name = "exchange/{}/jobs".format(userid)
 
         connection = Connection(**config)
         exchange = Exchange(exchange_name, type="topic")

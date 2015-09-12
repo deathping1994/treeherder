@@ -11,8 +11,6 @@ def first_job(sample_data, test_project, result_set_stored):
     job = copy.deepcopy(sample_data.pulse_jobs[0])
     job["origin"]["project"] = test_project
     job["origin"]["revision"] = revision
-    del job["logs"]
-    del job["artifacts"]
     return job
 
 
@@ -77,8 +75,24 @@ def test_transition_fail_retry(first_job, jm):
     change_state_result(first_job, jl, jm, "fail", "completed", "retry")
 
 
+def test_transition_pending_retry_fail_stays_retry(first_job, jm):
+    jl = pulse_consumer.JobLoader()
+
+    change_state_result(first_job, jl, jm, "pending", "pending", "unknown")
+    first_job["isRetried"] = True
+    change_state_result(first_job, jl, jm, "fail", "completed", "retry")
+    first_job["isRetried"] = False
+    change_state_result(first_job, jl, jm, "fail", "completed", "retry")
+
+
 def change_state_result(job, job_loader, jm, status, state, result):
+    # make a copy so we can modify it and not affect other tests
+    job = copy.deepcopy(job)
     job["status"] = status
+    if status == 'pending':
+        # pending jobs wouldn't have logs and our store_job_data doesn't
+        # support it.
+        del job['logs']
 
     job_loader.process_job_list([job], raise_errors=True)
 
